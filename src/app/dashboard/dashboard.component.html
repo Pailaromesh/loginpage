@@ -1,0 +1,41 @@
+<p>Barchart</p>
+
+<div class="chart-container">
+<div class="row">
+    <div class="col-lg-6">
+        <canvas id="barchart"></canvas>
+    </div>
+    <div class="col-lg-6">
+        <canvas id="linechart"></canvas>
+       
+        <!-- <canvas id="polars"></canvas> -->
+
+       
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <canvas baseChart
+  [type]="'pie'"
+  [datasets]="pieChartDatasets"
+  [labels]="pieChartLabels"
+  [options]="pieChartOptions"
+  [plugins]="pieChartPlugins"
+  [legend]="pieChartLegend">
+</canvas>
+        </div>
+        <div class="col-lg-6">
+        
+            <canvas baseChart
+            [datasets]="polarAreaChartDatasets"
+            [labels]="polarAreaChartLabels"
+            [legend]="polarAreaLegend"
+            [options]="polarAreaOptions"
+            [type]="'polarArea'">
+    </canvas>
+    
+            <!-- <canvas id="polars"></canvas> -->
+    
+           
+        </div>
+</div>
+</div>

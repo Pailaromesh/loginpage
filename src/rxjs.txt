@@ -1,0 +1,282 @@
+rxjs:-==
+
+
+Observable :-  its like handel async process request data handel using subscribe method through we can like http calls we can use 
+subject: 
+---------
+subcategery:
+------------
+subject
+AsyncSubject
+BehaviorSubject
+ReplaySubject
+
+Operater:-
+----------
+
+of,from ,create
+fromEvent
+interval,
+timer,
+map,
+filter,
+reduce,
+merge,join,forkjoin
+debounceTime
+
+
+subscribe: ts file data access
+export interface Person
+{
+    name:string,
+    address:string
+}
+
+export const objaData:Person[]=
+[
+  {
+  name:'romesh',
+  address:'Hyd'
+  },
+  {
+    name:'hello',
+    address:'Hyd'
+   }
+  ];
+subscribe: component 
+
+import { Component,OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+
+@Component({
+  selector: 'app-observable',
+  standalone: true,
+  imports: [],
+  templateUrl: './observable.component.html',
+  styleUrl: './observable.component.css'
+})
+export class ObservableComponent implements OnInit {
+  data:any=[];
+  // Observable example
+  objaData:any=
+  [
+    {
+    name:'romesh',
+    address:'Hyd'
+    
+    },
+    {
+      name:'romesh',
+      address:'Hyd'
+      
+     }
+    ];
+      obs$= new Observable<any>((o)=>{
+        o.next(this.objaData),
+        o.error("hey its an error!! check it !!")
+      });
+      ngOnInit(): void {
+        debugger
+        {
+          this.obs$.subscribe(
+
+            (response) => {
+              console.log(response)
+              this.data = response; // Handle the response data
+            },
+            (err) => {
+              // this.error = err.message; // Handle error
+              console.log(err.message);
+              // this.loading=false;
+            },
+       
+            ()=>{console.log("completed")
+            }
+      )
+      debugger
+      console.log(this.data);
+        }
+      }
+}
+
+simple subject:
+multicast 
+
+we need to share data same like we can use 
+
+let s= new Subject();
+where ever we want and anytime  emit any place 
+
+s.next(data);
+s.next(data2);
+
+s.subscribe(
+
+data=>{console.log(data)},
+err=> {console.log(err.message)},
+()=>{console.log("compeleted")}
+
+)
+
+simple subject drawback::-) 
+---------------------------------
+
+in this one before subscribe not find so once subscribe not fetch the data loose data so we need to call again for theat method AddToDos() inside subject.service.ts file
+
+todoformcomponent.ts 
+---------------------------
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { subjectservice } from '../subject.service';
+
+@Component({
+  selector: 'app-todoform',
+  standalone: true,
+  imports: [FormsModule],
+  templateUrl: './todoform.component.html',
+  styleUrl: './todoform.component.css'
+})
+export class TodoformComponent {
+  constructor(private subjectSerice:subjectservice){ }
+  iminput:any="";
+  addTodos(value:any){
+    debugger
+    this.subjectSerice.AddTodos(value);
+    this.iminput="";
+
+  }
+  addTodos2(value:any){
+    
+    this.subjectSerice.AddTodos(value);
+    this.iminput="";
+  }
+
+}
+
+/// html
+==================
+<p>todoform works!</p>
+
+<input type="text" [(ngModel)]="iminput" placeholder="Enter something" #inputId>
+<button (click)="addTodos(inputId.value)">click me add subject</button>
+<button (click)="addTodos2(iminput)">click me add subject2</button>
+{{iminput}}
+
+
+todoListcomponent.ts
+--------------------
+
+import { Component,OnInit } from '@angular/core';
+import { subjectservice } from '../subject.service';
+
+@Component({
+  selector: 'app-todolist',
+  standalone: true,
+  imports: [],
+  templateUrl: './todolist.component.html',
+  styleUrl: './todolist.component.css'
+})
+export class TodolistComponent implements OnInit{
+constructor(private todoserves:subjectservice)
+{
+
+}
+data:any=[];
+ngOnInit(): void {
+  this.todoserves.todoList.subscribe(
+    data=>this.data=data,
+  )
+  this.todoserves.showToDos(); // method calling service through 
+}
+
+}
+html
+=======
+
+<p>todolist works!</p>
+<ul>
+    @for(item of data; track $index )
+{
+
+    <li>{{item}}</li>
+}
+</ul>
+
+
+behavior subject:
+---------------
+
+if suject last emit data if use  subscibe then get value simple subject 
+
+then it was intial data sending so intaladata sending for first subscription
+after that we can send any data for next tikme uising next method we can access for subscriptiondone getting value 
+replay subject
+==============
+
+in this subject we can use two parameters 1st one how many emeit data we need required that many records we can fetch when we will subscribe data
+second parameters we can use time limint 1000 use opne min its awailbale we can acces other wise destoryed data 
+rs=  new replaysubject(2,1000);
+rs.next(data);
+
+
+constructor(private ser:serivce){}
+
+this.ser.rs.subscribe(
+
+(data)=>{console.log(data)}
+
+)
+
+then acces the data
+
+
+aync subect :
+-----------------------------
+
+this one access the data when we clear 
+next we can emit data subscibe we can access
+unsubscibe data means clear the data 
+
+sub completed method we can acces then access 
+
+let s = new AsyncSubject()
+
+s.complete() then acces the data 
+
+
+constructor(private ser:serivce){}
+
+this.ser.s.subscribe(
+
+(data)=>{console.log(data)}// time limit and emits data length  
+
+)
+
+
+Operater : rxjs
+===============
+js library we can use functionality
+creation operater 
+
+of ,from ,range,intervel,fromevent 
+pipeale operation
+
+
+of operater:
+
+treate like observable data store 
+
+like 
+
+of(3,5,6,7).subscribe((data)=>console.log(data)) // here treate like next() method like howmant element have then create 
+
+from([3,5,6,7]).subscribe((data)=>console.log(data)) // 3,5,6,7 // here single emeit any type( it means itarte required like array or string ) we can 
+from("hello").subscribe((data)=>console.log(data))//output: h e l l o 
+
+of(["hello","world"]).subscribe((data)=>console.log(data))//output: ["hello","world"]
+
+range(4).subscribe((data)=>console.log(data))//output: 0,1,2,3  
+just print 4 values start defalut value 
+range(1,4).subscribe((data)=>console.log(data))//output:1,2,3,4  
+workinglike start 1 to 4 values we can print 
+interval(4000).subscribe((data)=>console.log(data))//output: it means 4 seconds print number zero after that 1 it break time 4 seconds 
